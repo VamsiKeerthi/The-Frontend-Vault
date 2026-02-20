@@ -117,6 +117,47 @@ tr:hover td{background:rgba(255,255,255,0.015);}
 .output-label{font-size:0.55rem;letter-spacing:3px;color:var(--accent2);text-transform:uppercase;margin-bottom:8px;}
 .output-line{color:var(--accent3);line-height:1.8;}
 .output-comment{color:var(--muted);font-style:italic;}
+/* ─── RESPONSIVE ─── */
+.menu-toggle{display:none;background:none;border:1px solid var(--border);color:var(--muted);font-size:1.1rem;padding:6px 11px;cursor:pointer;border-radius:2px;transition:all 0.2s;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;}
+.menu-toggle:hover{border-color:var(--accent);color:var(--accent);}
+.nav-drawer{display:flex;flex-direction:column;flex:1;overflow-y:auto;}
+@media(max-width:768px){
+  :root{--sidebar-w:100%;}
+  .app{flex-direction:column;}
+  .sidebar{width:100%;min-width:100%;height:auto;position:fixed;top:0;left:0;right:0;z-index:200;flex-direction:column;border-right:none;border-bottom:1px solid var(--border);max-height:100vh;overflow:hidden;}
+  .sidebar-brand{padding:12px 18px 8px;display:flex;align-items:center;justify-content:space-between;flex-direction:row;border-bottom:none;}
+  .brand-sub{display:none;}
+  .brand-js{font-size:1.8rem;}
+  .prog-wrap{padding:0 18px 10px;border-bottom:none;}
+  .prog-row{margin-bottom:5px;}
+  .menu-toggle{display:flex;}
+  .nav-drawer{max-height:0;overflow:hidden;transition:max-height 0.35s cubic-bezier(0.16,1,0.3,1);}
+  .nav-drawer.open{max-height:70vh;overflow-y:auto;}
+  .main{padding-top:110px;overflow-y:auto;height:auto;}
+  .hero{padding:38px 22px 32px;}
+  .hero-title{font-size:2.8rem;}
+  .hero-stats{gap:20px;flex-wrap:wrap;}
+  .content{padding:0 22px 60px;}
+  .section{padding:36px 0 28px;}
+  .sec-num{font-size:3rem;min-width:60px;}
+  .sec-title{font-size:1.5rem;}
+  .qa-a{padding:4px 14px 20px 14px;}
+  pre{font-size:0.67rem;padding:13px 14px;}
+  table{font-size:0.64rem;}
+  th,td{padding:7px 10px;}
+  .bottom-nav{flex-direction:column;gap:10px;}
+  .btn{width:100%;text-align:center;}
+  .ov-grid{grid-template-columns:1fr 1fr;}
+  .cheat-grid{grid-template-columns:1fr;}
+  .stat-num{font-size:1.7rem;}
+}
+@media(max-width:480px){
+  .ov-grid{grid-template-columns:1fr;}
+  .hero-title{font-size:2.1rem;}
+  .hero-stats{gap:14px;}
+  .section-head{flex-direction:column;gap:6px;}
+  .sec-num{font-size:2.2rem;}
+}
 </style>
 </head>
 <body>
@@ -128,6 +169,8 @@ tr:hover td{background:rgba(255,255,255,0.015);}
     <div class="prog-row"><span class="prog-label">Progress</span><span class="prog-pct" id="pct">0%</span></div>
     <div class="prog-track"><div class="prog-fill" id="fill"></div></div>
   </div>
+  <button class="menu-toggle" onclick="toggleMenu()" id="menuBtn">☰ Menu</button>
+  <div class="nav-drawer" id="navDrawer">
   <div class="nav-group"><div class="nav-group-label"><span>◉</span> Start</div>
     <div class="nav-item" data-s="overview" onclick="go('overview')"><span class="ni-dot"></span>Overview</div></div>
   <div class="nav-group"><div class="nav-group-label"><span>1</span> Foundations</div>
@@ -154,6 +197,7 @@ tr:hover td{background:rgba(255,255,255,0.015);}
     <div class="nav-item" data-s="s11" onclick="go('s11')"><span class="ni-dot"></span>Advanced Concepts</div></div>
   <div class="nav-group"><div class="nav-group-label"><span>★</span> Final</div>
     <div class="nav-item" data-s="s12" onclick="go('s12')"><span class="ni-dot"></span>Cheat Sheet</div></div>
+  </div><!-- /nav-drawer -->
 </nav>
 <!-- MAIN -->
 <main class="main">
@@ -2741,12 +2785,13 @@ clearInterval(id); <span class="cm">// Must clear when no longer needed!</span>
 
 <script>
 const sections = ['overview','s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11','s12'];
-const visited = new Set(JSON.parse(localStorage.getItem('courseVisited') || '["overview"]'));
+const visited = new Set(['overview']);
 
-function saveProgress() {
-  localStorage.setItem('courseVisited', JSON.stringify(Array.from(visited)));
-  const pct = Math.round((visited.size / sections.length) * 100);
-  localStorage.setItem('courseProgress', pct);
+function toggleMenu() {
+  const drawer = document.getElementById('navDrawer');
+  const btn = document.getElementById('menuBtn');
+  drawer.classList.toggle('open');
+  btn.textContent = drawer.classList.contains('open') ? '✕ Close' : '☰ Menu';
 }
 
 function go(id) {
@@ -2757,13 +2802,15 @@ function go(id) {
   const nav = document.querySelector('[data-s="' + id + '"]');
   if (nav) { nav.classList.add('active'); }
   visited.add(id);
+  const drawer = document.getElementById('navDrawer');
+  const btn = document.getElementById('menuBtn');
+  if (drawer) { drawer.classList.remove('open'); if(btn) btn.textContent='☰ Menu'; }
   document.querySelectorAll('.nav-item').forEach(n => {
     if (visited.has(n.dataset.s) && !n.classList.contains('active')) n.classList.add('visited');
   });
   const pct = Math.round((visited.size / sections.length) * 100);
   document.getElementById('pct').textContent = pct + '%';
   document.getElementById('fill').style.width = pct + '%';
-  saveProgress();
 }
 
 function tog(el) {
@@ -2773,12 +2820,6 @@ function tog(el) {
 
 // init
 document.querySelector('[data-s="overview"]').classList.add('active');
-const pct = Math.round((visited.size / sections.length) * 100);
-document.getElementById('pct').textContent = pct + '%';
-document.getElementById('fill').style.width = pct + '%';
-document.querySelectorAll('.nav-item').forEach(n => {
-  if (visited.has(n.dataset.s) && n.dataset.s !== 'overview') n.classList.add('visited');
-});
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Frontend Vault</title>
+    <title>The Frontend Vault— Frontend Mastery</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
       rel="stylesheet"
@@ -219,8 +219,13 @@
       /* ── CARD GRID ── */
       .card-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
         gap: 20px;
+      }
+      @media (max-width: 960px) {
+        .card-grid {
+          grid-template-columns: 1fr 1fr;
+        }
       }
 
       @media (max-width: 720px) {
@@ -485,11 +490,44 @@
         flex-shrink: 0;
       }
 
-      .card-html:hover .cta-arrow {
-        background: var(--accent-html);
-        border-color: var(--accent-html);
-        color: #fff;
+      .card-react {
+      }
+      .card-react::after {
+        background: #61dafb;
+        border-color: #61dafb;
+      }
+      .card-react:hover {
+        border-color: rgba(97, 218, 251, 0.25);
+      }
+      .card-react::before {
+        background: radial-gradient(
+          circle,
+          rgba(97, 218, 251, 0.07),
+          transparent 65%
+        );
+      }
+      .card-react .card-number {
+        color: #61dafb;
+      }
+      .card-react .card-tag {
+        color: #61dafb;
+        border-color: rgba(97, 218, 251, 0.25);
+        background: rgba(97, 218, 251, 0.06);
+      }
+      .card-react .card-title em {
+        color: #61dafb;
+      }
+      .card-react .stat-n {
+        color: #61dafb;
+      }
+      .card-react:hover .cta-arrow {
+        background: #61dafb;
+        border-color: #61dafb;
+        color: #000;
         transform: rotate(45deg);
+      }
+      .card-react:hover .card-number {
+        opacity: 0.22;
       }
       .card-js:hover .cta-arrow {
         background: var(--accent-js);
@@ -775,11 +813,7 @@
 
       <div class="card-grid">
         <!-- HTML/CSS Card -->
-        <a
-          class="course-card card-html"
-          href="html-css-interview-course.html"
-          target="_blank"
-        >
+        <a class="course-card card-html" href="html-css-interview-course.html">
           <div class="card-number">01</div>
           <div class="card-tag">◆ Course One</div>
           <h2 class="card-title">HTML &amp; <em>CSS</em> Interview Prep</h2>
@@ -824,7 +858,6 @@
         <a
           class="course-card card-js"
           href="javascript-interview-course-detailed.html"
-          target="_blank"
         >
           <div class="card-number">02</div>
           <div class="card-tag">◆ Course Two</div>
@@ -865,6 +898,47 @@
             <div class="cta-arrow">↗</div>
           </div>
         </a>
+
+        <!-- React Card -->
+        <a class="course-card card-react" href="react-interview-course.html">
+          <div class="card-number">03</div>
+          <div class="card-tag">◆ Course Three</div>
+          <h2 class="card-title">React <em>Deep Dive</em></h2>
+          <p class="card-desc">
+            Virtual DOM, reconciliation, hooks lifecycle, performance
+            optimization, Context, Redux mental model, routing and lazy loading
+            — all explained from first principles.
+          </p>
+          <div class="card-topics">
+            <span class="topic-pill">Virtual DOM</span>
+            <span class="topic-pill">Reconciliation</span>
+            <span class="topic-pill">useState / useEffect</span>
+            <span class="topic-pill">useRef / useMemo</span>
+            <span class="topic-pill">useCallback</span>
+            <span class="topic-pill">Custom Hooks</span>
+            <span class="topic-pill">React.memo</span>
+            <span class="topic-pill">Context API</span>
+            <span class="topic-pill">Redux</span>
+            <span class="topic-pill">Code Splitting</span>
+          </div>
+          <div class="card-cta">
+            <div class="cta-stats">
+              <div class="stat">
+                <div class="stat-n">6</div>
+                <div class="stat-l">Modules</div>
+              </div>
+              <div class="stat">
+                <div class="stat-n">60+</div>
+                <div class="stat-l">Questions</div>
+              </div>
+              <div class="stat">
+                <div class="stat-n">★</div>
+                <div class="stat-l">Cheat Sheet</div>
+              </div>
+            </div>
+            <div class="cta-arrow">↗</div>
+          </div>
+        </a>
       </div>
     </section>
 
@@ -891,25 +965,28 @@
     <!-- ── FOOTER ── -->
     <footer>
       <div class="footer-inner">
-        <div class="footer-brand">INTERVIEW READY</div>
+        <div class="footer-brand">THE FRONTEND VAULT</div>
         <div class="footer-links">
-          <a
-            class="footer-link"
-            href="html-css-interview-course.html"
-            target="_blank"
+          <a class="footer-link" href="html-css-interview-course.html"
             >HTML &amp; CSS Course</a
           >
           <a
             class="footer-link"
             href="javascript-interview-course-detailed.html"
-            target="_blank"
             >JavaScript Course</a
+          >
+          <a class="footer-link" href="react-interview-course.html"
+            >React Course</a
           >
         </div>
       </div>
       <div class="footer-note">
-        Frontend Mastery Series · VAMSI KEERTHI · 2025 Edition
+        Frontend Mastery Series · VAMSI KEERTHI · 2026 Edition
       </div>
+      <script>
+        document.querySelector(".footer-note").textContent =
+          `Frontend Mastery Series · VAMSI KEERTHI · ${new Date().getFullYear()} Edition`;
+      </script>
     </footer>
 
     <script>
@@ -919,7 +996,6 @@
           (window.scrollY / (document.body.scrollHeight - window.innerHeight)) *
           100;
         document.getElementById("scrollBar").style.width = pct + "%";
-        localStorage.setItem("scrollProgress", pct);
       });
 
       // Cursor glow
@@ -940,6 +1016,12 @@
         glow.style.background =
           "radial-gradient(circle, rgba(247,201,72,0.06) 0%, transparent 70%)";
       });
+      document
+        .querySelector(".card-react")
+        .addEventListener("mouseenter", () => {
+          glow.style.background =
+            "radial-gradient(circle, rgba(97,218,251,0.06) 0%, transparent 70%)";
+        });
       document.querySelectorAll(".course-card").forEach((c) => {
         c.addEventListener("mouseleave", () => {
           glow.style.background =
